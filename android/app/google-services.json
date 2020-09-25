@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "351436855201",
+    "firebase_url": "https://batcher-12ce8.firebaseio.com",
+    "project_id": "batcher-12ce8",
+    "storage_bucket": "batcher-12ce8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:351436855201:android:3e43d00825b242ce6c1de0",
+        "android_client_info": {
+          "package_name": "com.pronkoenterprises.batcher"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "351436855201-6s49m76e49aff7kd0al9tjhcgd8050ul.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhWuFVkgEMu6-y3m6fTj4ha_1QBQSS0XA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "351436855201-6s49m76e49aff7kd0al9tjhcgd8050ul.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
