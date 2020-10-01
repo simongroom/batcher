@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 
 class Batch {
   String id;
-  int productId;
+  String productId;
   int batchCode;
   Timestamp date;
-  int shelfLife;
   bool cookToTemp;
   double hotFillTemp;
   bool lidCheck;
@@ -18,10 +18,9 @@ class Batch {
   bool isComplete;
 
   Batch({
-    this.productId,
+    @required this.productId,
     this.batchCode,
     this.date,
-    this.shelfLife,
     this.cookToTemp,
     this.hotFillTemp,
     this.lidCheck,
@@ -35,7 +34,12 @@ class Batch {
   });
 
   factory Batch.fromJson(Map<String, dynamic> json) {
-    return Batch();
+    return Batch(
+      productId: json['product_id'],
+      date: json['date'],
+      unitCount: json['unit_count'],
+      batchCode: json['batch_code'],
+    );
   }
 
   Map<String, dynamic> toJson() {

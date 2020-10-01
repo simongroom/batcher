@@ -1,4 +1,4 @@
-import 'package:batcher/batch_list.dart';
+import 'package:batcher/product_detail.dart';
 import 'package:batcher/models/product.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +36,7 @@ class ProductList extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => BatchList(
+                          builder: (context) => ProductDetail(
                             product: product,
                           ),
                         ),
