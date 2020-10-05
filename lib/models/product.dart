@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
 class Product {
+  String productId;
   String clientName;
   String productName;
   int productCode;
   int shelfLife;
 
   Product({
+    @required this.productId,
     @required this.clientName,
     @required this.productName,
     @required this.productCode,
@@ -15,6 +17,7 @@ class Product {
 
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
+      productId: json['product_id'],
       clientName: json['client_name'],
       productName: json['product_name'],
       productCode: json['product_code'],

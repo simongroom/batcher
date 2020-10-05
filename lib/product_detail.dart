@@ -22,7 +22,7 @@ class ProductDetail extends StatelessWidget {
   }
 
   Future getBatchList() async {
-    return batches.get();
+    return batches.where('product_id', isEqualTo: product.productId).get();
   }
 
   @override
