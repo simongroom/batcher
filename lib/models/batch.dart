@@ -80,6 +80,9 @@ class Batch {
   }
 
   String buildBatchCode(int productCode) {
+    if (batchId == null) {
+      return "New Batch";
+    }
     String batchCodeString = convertIntToString(this.batchCode);
     String productCodeString = convertIntToString(productCode);
     return "Batch: $batchCodeString-$productCodeString";
