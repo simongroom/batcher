@@ -6,14 +6,14 @@ class Batch {
   String productId;
   int batchCode;
   Timestamp date;
-  bool cookToTemp;
+  bool cookToTemp = false;
   double hotFillTemp;
-  bool lidCheck;
+  bool lidCheck = false;
   int unitCount;
   double phPrior;
   double phPost;
   String notes;
-  bool ingredientsVerified;
+  bool ingredientsVerified = false;
   String initials;
   bool isComplete;
 
@@ -21,14 +21,14 @@ class Batch {
     @required this.productId,
     this.batchCode,
     this.date,
-    this.cookToTemp,
+    this.cookToTemp = false,
     this.hotFillTemp,
-    this.lidCheck,
+    this.lidCheck = false,
     this.unitCount,
     this.phPrior,
     this.phPost,
     this.notes,
-    this.ingredientsVerified,
+    this.ingredientsVerified = false,
     this.initials,
     this.isComplete,
   });
@@ -39,11 +39,32 @@ class Batch {
       date: json['date'],
       unitCount: json['unit_count'],
       batchCode: json['batch_code'],
+      cookToTemp: json['cook_to_temp'] ?? false,
+      lidCheck: json['lid_check'] ?? false,
+      ingredientsVerified: json['ingredients_verified'] ?? false,
+      phPost: json['ph_post'],
+      phPrior: json['ph_prior'],
+      initials: json['initials'],
+      notes: json['notes'],
     );
   }
 
   Map<String, dynamic> toJson() {
     Map<String, dynamic> _data = {};
     return _data;
+  }
+
+  String convertIntToString(int i) {
+    String s = i.toString();
+    if (i < 10) {
+      s = "0" + i.toString();
+    }
+    return s;
+  }
+
+  String buildBatchCode(int productCode) {
+    String batchCodeString = convertIntToString(this.batchCode);
+    String productCodeString = convertIntToString(productCode);
+    return "Batch: $batchCodeString-$productCodeString";
   }
 }

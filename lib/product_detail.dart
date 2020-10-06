@@ -22,7 +22,24 @@ class ProductDetail extends StatelessWidget {
   }
 
   Future getBatchList() async {
-    return batches.where('product_id', isEqualTo: product.productId).get();
+    return batches
+        .where(
+          'product_id',
+          isEqualTo: product.productId,
+        )
+        .get();
+  }
+
+  void navigateToBatch(BuildContext context, Batch batch) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => BatchDetail(
+          batch: batch,
+          productCode: product.productCode,
+        ),
+      ),
+    );
   }
 
   @override
@@ -56,21 +73,14 @@ class ProductDetail extends StatelessWidget {
                       return Card(
                         child: InkWell(
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => BatchDetail(
-                                  batch: batch,
-                                ),
-                              ),
-                            );
+                            navigateToBatch(context, batch);
                           },
                           splashColor: Colors.blue.withAlpha(30),
                           child: ListTile(
                             leading:
                                 Text(formatTimeStampToDateString(batch.date)),
-                            title: buildBatchCode(
-                                product.productCode, batch.batchCode),
+                            title:
+                                Text(batch.buildBatchCode(product.productCode)),
                             subtitle: Text(
                                 "Unit Count: ${batch.unitCount.toString()}"),
                             trailing: Icon(
@@ -88,7 +98,7 @@ class ProductDetail extends StatelessWidget {
               tooltip: "New Batch",
               child: Icon(Icons.add),
               onPressed: () {
-                print("new batch clicked");
+                newBatchClickHandler(context);
               },
             ),
           );
@@ -109,9 +119,11 @@ class ProductDetail extends StatelessWidget {
     return s;
   }
 
-  Text buildBatchCode(int productCode, int batchCode) {
-    String batchCodeString = convertIntToString(batchCode);
-    String productCodeString = convertIntToString(productCode);
-    return Text("Batch: $batchCodeString-$productCodeString");
+  void newBatchClickHandler(BuildContext context) {
+    Batch _batch = Batch(
+      productId: product.productId,
+      date: Timestamp.now(),
+    );
+    navigateToBatch(context, _batch);
   }
 }
