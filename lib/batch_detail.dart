@@ -1,6 +1,7 @@
 import 'package:batcher/models/batch.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
 class BatchDetail extends StatefulWidget {
   final Batch batch;
@@ -22,6 +23,9 @@ class _BatchDetailState extends State<BatchDetail> {
   final _formKey = GlobalKey<FormState>();
   final Batch batch;
   final int productCode;
+
+  final CollectionReference batches =
+      FirebaseFirestore.instance.collection('batches');
 
   _BatchDetailState({
     @required this.batch,
@@ -218,7 +222,19 @@ class _BatchDetailState extends State<BatchDetail> {
       ),
       floatingActionButton: FloatingActionButton(
         tooltip: "Save",
-        onPressed: () {},
+        onPressed: () {
+          if (batch.batchId.isEmpty) {
+            // this is a new batch, save
+            batch.batchId = Uuid().v4();
+            batches.add(batch.toJson()).then((value) => Navigator.pop(context));
+          } else {
+            batches
+                .doc(batch.batchId)
+                .set(batch.toJson())
+                .then((value) => Navigator.pop(context));
+            // this is an existin batch, update
+          }
+        },
         child: Icon(
           Icons.save,
         ),
