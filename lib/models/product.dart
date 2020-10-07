@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class Product {
   String productId;
   String clientName;
@@ -8,11 +6,11 @@ class Product {
   int shelfLife;
 
   Product({
-    @required this.productId,
-    @required this.clientName,
-    @required this.productName,
-    @required this.productCode,
-    @required this.shelfLife,
+    this.productId,
+    this.clientName,
+    this.productName,
+    this.productCode,
+    this.shelfLife,
   });
 
   factory Product.fromJson(Map<String, dynamic> json) {
@@ -27,10 +25,11 @@ class Product {
 
   Map<String, dynamic> toJson() {
     Map<String, dynamic> _data = {
-      'client_name': this.clientName,
-      'product_name': this.productName,
-      'product_code': this.productCode,
-      'shelf_life': this.shelfLife,
+      'product_id': productId,
+      'client_name': clientName,
+      'product_name': productName,
+      'product_code': productCode,
+      'shelf_life': shelfLife,
     };
     return _data;
   }

@@ -4,12 +4,13 @@ import 'package:flutter/material.dart';
 class Batch {
   String batchId;
   String productId;
-  int batchCode;
+  int batchNumber;
+  String batchCode;
   Timestamp date;
   bool cookToTemp = false;
   double hotFillTemp;
   bool lidCheck = false;
-  int unitCount;
+  int unitCount = 0;
   double phPrior;
   double phPost;
   String notes;
@@ -21,11 +22,12 @@ class Batch {
     @required this.productId,
     this.batchId,
     this.batchCode,
+    this.batchNumber,
     this.date,
     this.cookToTemp = false,
     this.hotFillTemp,
     this.lidCheck = false,
-    this.unitCount,
+    this.unitCount = 0,
     this.phPrior,
     this.phPost,
     this.notes,
@@ -39,8 +41,9 @@ class Batch {
       productId: json['product_id'],
       batchId: json['batch_id'],
       date: json['date'],
-      unitCount: json['unit_count'],
+      unitCount: json['unit_count'] ?? 0,
       batchCode: json['batch_code'],
+      batchNumber: json['batch_number'],
       cookToTemp: json['cook_to_temp'] ?? false,
       hotFillTemp: json['hot_fill_temp'],
       lidCheck: json['lid_check'] ?? false,
@@ -59,6 +62,7 @@ class Batch {
       'date': date,
       'unit_count': unitCount,
       'batch_code': batchCode,
+      'batch_number': batchNumber,
       'cook_to_temp': cookToTemp,
       'hot_fill_temp': hotFillTemp,
       'lid_check': lidCheck,
@@ -80,11 +84,12 @@ class Batch {
   }
 
   String buildBatchCode(int productCode) {
-    if (batchId == null) {
-      return "New Batch";
+    if (batchCode != null) {
+      return batchCode;
+    } else {
+      String batchCodeString = convertIntToString(batchNumber);
+      String productCodeString = convertIntToString(productCode);
+      return "$batchCodeString-$productCodeString";
     }
-    String batchCodeString = convertIntToString(this.batchCode);
-    String productCodeString = convertIntToString(productCode);
-    return "Batch: $batchCodeString-$productCodeString";
   }
 }
