@@ -1,11 +1,24 @@
-import 'package:batcher/product_detail.dart';
 import 'package:batcher/models/product.dart';
+import 'package:batcher/product_view.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class ProductList extends StatelessWidget {
+class ProductList extends StatefulWidget {
+  @override
+  _ProductListState createState() => _ProductListState();
+}
+
+class _ProductListState extends State<ProductList> {
   final CollectionReference products =
       FirebaseFirestore.instance.collection('products');
+
+  Future _getProductListFuture;
+
+  @override
+  void initState() {
+    _getProductListFuture = getProductList();
+    super.initState();
+  }
 
   Future getProductList() async {
     return products.get();
@@ -15,11 +28,34 @@ class ProductList extends StatelessWidget {
   Widget build(BuildContext context) {
     return FutureBuilder(
       // Initialize FlutterFire
-      future: getProductList(),
+      future: _getProductListFuture,
       builder: (context, snapshot) {
         // Check for errors
         if (snapshot.hasError) {
-          return Text("Something went wrong");
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(
+                "Error Ocurred",
+              ),
+            ),
+            body: Center(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      "Something went wrong",
+                      style: TextStyle(fontSize: 32.0, color: Colors.red),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(snapshot.error.toString()),
+                  ),
+                ],
+              ),
+            ),
+          );
         }
 
         // Once complete, show your application
@@ -36,11 +72,15 @@ class ProductList extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ProductDetail(
+                          builder: (context) => ProductView(
                             product: product,
                           ),
                         ),
-                      );
+                      ).then((value) {
+                        setState(() {
+                          _getProductListFuture = getProductList();
+                        });
+                      });
                     },
                     splashColor: Colors.blue.withAlpha(30),
                     child: ListTile(
@@ -55,7 +95,21 @@ class ProductList extends StatelessWidget {
               tooltip: "Add Product",
               child: Icon(Icons.add),
               onPressed: () {
-                print("add clicked");
+                Product _product = Product(
+                  productName: "New Product",
+                );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProductView(
+                      product: _product,
+                    ),
+                  ),
+                ).then((value) {
+                  setState(() {
+                    _getProductListFuture = getProductList();
+                  });
+                });
               },
             ),
           );

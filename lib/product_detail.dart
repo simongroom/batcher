@@ -1,129 +1,132 @@
-import 'package:batcher/batch_detail.dart';
 import 'package:batcher/models/product.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
-import 'models/batch.dart';
-
-class ProductDetail extends StatelessWidget {
+class ProductDetail extends StatefulWidget {
   final Product product;
-
-  final CollectionReference batches =
-      FirebaseFirestore.instance.collection('batches');
 
   ProductDetail({
     this.product,
   });
 
-  String formatTimeStampToDateString(Timestamp timestamp) {
-    DateTime date =
-        DateTime.fromMillisecondsSinceEpoch(timestamp.seconds * 1000);
-    return "${date.year.toString()}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}";
-  }
+  @override
+  _ProductDetailState createState() => _ProductDetailState(
+        product: product,
+      );
+}
 
-  Future getBatchList() async {
-    return batches
-        .where(
-          'product_id',
-          isEqualTo: product.productId,
-        )
-        .get();
-  }
+class _ProductDetailState extends State<ProductDetail> {
+  final CollectionReference products =
+      FirebaseFirestore.instance.collection('products');
+  final Product product;
 
-  void navigateToBatch(BuildContext context, Batch batch) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => BatchDetail(
-          batch: batch,
-          productCode: product.productCode,
-        ),
-      ),
-    );
-  }
+  _ProductDetailState({
+    this.product,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      // Initialize FlutterFire
-      future: getBatchList(),
-      builder: (context, snapshot) {
-        // Check for errors
-        if (snapshot.hasError) {
-          return Text("Something went wrong");
-        }
-
-        // Once complete, show your application
-        if (snapshot.connectionState == ConnectionState.done) {
-          return Scaffold(
-            appBar: AppBar(
-              title: Text(product.productName),
-            ),
-            body: Column(
-              children: [
-                Text(
-                    "Product Code: ${convertIntToString(product.productCode)}"),
-                Text("Shelf Life: ${product.shelfLife.toString()} months"),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: snapshot.data.docs.length,
-                    itemBuilder: (context, index) {
-                      Batch batch =
-                          Batch.fromJson(snapshot.data.docs[index].data());
-                      return Card(
-                        child: InkWell(
-                          onTap: () {
-                            navigateToBatch(context, batch);
-                          },
-                          splashColor: Colors.blue.withAlpha(30),
-                          child: ListTile(
-                            leading:
-                                Text(formatTimeStampToDateString(batch.date)),
-                            title:
-                                Text(batch.buildBatchCode(product.productCode)),
-                            subtitle: Text(
-                                "Unit Count: ${batch.unitCount.toString()}"),
-                            trailing: Icon(
-                              Icons.arrow_forward,
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ),
-            floatingActionButton: FloatingActionButton(
-              tooltip: "New Batch",
-              child: Icon(Icons.add),
-              onPressed: () {
-                newBatchClickHandler(context);
+    return Scaffold(
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextFormField(
+              keyboardType: TextInputType.text,
+              initialValue: product.clientName,
+              onChanged: (val) {
+                product.clientName = val;
+              },
+              decoration: const InputDecoration(
+                labelText: 'Client Name',
+                hintText: 'Client Name',
+              ),
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'Please enter the client name';
+                }
+                return null;
               },
             ),
-          );
-        }
-
-        return Center(
-          child: CircularProgressIndicator(),
-        );
-      },
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextFormField(
+              keyboardType: TextInputType.text,
+              initialValue: product.productName,
+              onChanged: (val) {
+                product.productName = val;
+              },
+              decoration: const InputDecoration(
+                labelText: 'Product Name',
+                hintText: 'Product Name',
+              ),
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'Please enter the product name';
+                }
+                return null;
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextFormField(
+              keyboardType: TextInputType.number,
+              initialValue: product.productCode.toString(),
+              onChanged: (val) {
+                product.productCode = int.parse(val);
+              },
+              decoration: const InputDecoration(
+                labelText: 'Product Code',
+                hintText: 'Product Code',
+              ),
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'Please enter the product code';
+                }
+                return null;
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextFormField(
+              keyboardType: TextInputType.number,
+              initialValue: product.shelfLife.toString(),
+              onChanged: (val) {
+                product.shelfLife = int.parse(val);
+              },
+              decoration: const InputDecoration(
+                labelText: 'Shelf Life (months)',
+                hintText: 'Shelf Life (months)',
+              ),
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'Please enter the shelf life';
+                }
+                return null;
+              },
+            ),
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        tooltip: "Save",
+        onPressed: () {
+          setState(() {
+            if (product.productId == null) {
+              // this is a new product, create an id
+              product.productId = Uuid().v4();
+            }
+            products.doc(product.productId).set(product.toJson());
+          });
+        },
+        child: Icon(
+          Icons.save,
+        ),
+      ),
     );
-  }
-
-  String convertIntToString(int i) {
-    String s = i.toString();
-    if (i < 10) {
-      s = "0" + i.toString();
-    }
-    return s;
-  }
-
-  void newBatchClickHandler(BuildContext context) {
-    Batch _batch = Batch(
-      productId: product.productId,
-      date: Timestamp.now(),
-    );
-    navigateToBatch(context, _batch);
   }
 }

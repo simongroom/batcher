@@ -36,7 +36,7 @@ class _BatchDetailState extends State<BatchDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("${batch.buildBatchCode(productCode)}"),
+        title: Text("Batch: ${batch.buildBatchCode(productCode)}"),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -60,6 +60,26 @@ class _BatchDetailState extends State<BatchDetail> {
                     validator: (value) {
                       if (value.isEmpty) {
                         return 'Please enter the processing date';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    initialValue: batch.buildBatchCode(productCode),
+                    keyboardType: TextInputType.text,
+                    onChanged: (val) {
+                      batch.batchCode = val;
+                    },
+                    decoration: const InputDecoration(
+                      labelText: 'Batch Code',
+                      hintText: 'Batch Code',
+                    ),
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'Please enter the batch code';
                       }
                       return null;
                     },
@@ -223,17 +243,14 @@ class _BatchDetailState extends State<BatchDetail> {
       floatingActionButton: FloatingActionButton(
         tooltip: "Save",
         onPressed: () {
-          if (batch.batchId.isEmpty) {
-            // this is a new batch, save
+          if (batch.batchId == null) {
+            // this is a new batch, create id
             batch.batchId = Uuid().v4();
-            batches.add(batch.toJson()).then((value) => Navigator.pop(context));
-          } else {
-            batches
-                .doc(batch.batchId)
-                .set(batch.toJson())
-                .then((value) => Navigator.pop(context));
-            // this is an existin batch, update
           }
+          batches
+              .doc(batch.batchId)
+              .set(batch.toJson())
+              .then((value) => Navigator.pop(context));
         },
         child: Icon(
           Icons.save,
