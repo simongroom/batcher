@@ -87,22 +87,85 @@ class _BatchDetailState extends State<BatchDetail> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: TextFormField(
-                    initialValue: batch.unitCount.toString(),
-                    keyboardType: TextInputType.number,
-                    onChanged: (val) {
-                      widget.batch.unitCount = int.parse(val);
-                    },
-                    decoration: const InputDecoration(
-                      labelText: 'Unit Count',
-                      hintText: 'Unit Count',
-                    ),
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Please enter the unit count';
-                      }
-                      return null;
-                    },
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextFormField(
+                          initialValue: batch.unitCount.toString(),
+                          keyboardType: TextInputType.number,
+                          onChanged: (val) {
+                            batch.unitCount = int.parse(val);
+                          },
+                          decoration: const InputDecoration(
+                            labelText: 'Unit Count',
+                            hintText: 'Unit Count',
+                          ),
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Please enter the unit count';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                      Expanded(
+                        child: TextFormField(
+                          initialValue: batch.halfGallonCount.toString(),
+                          keyboardType: TextInputType.number,
+                          onChanged: (val) {
+                            batch.halfGallonCount = int.parse(val);
+                          },
+                          decoration: const InputDecoration(
+                            labelText: 'Half Gallon Count',
+                            hintText: 'Half Gallon Count',
+                          ),
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Please enter the half gallon count';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                      Expanded(
+                        child: TextFormField(
+                          initialValue: batch.gallonCount.toString(),
+                          keyboardType: TextInputType.number,
+                          onChanged: (val) {
+                            batch.gallonCount = int.parse(val);
+                          },
+                          decoration: const InputDecoration(
+                            labelText: 'Gallon Count',
+                            hintText: 'Gallon Count',
+                          ),
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Please enter the Gallon count';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                      Expanded(
+                        child: TextFormField(
+                          initialValue: batch.pailCount.toString(),
+                          keyboardType: TextInputType.number,
+                          onChanged: (val) {
+                            batch.pailCount = int.parse(val);
+                          },
+                          decoration: const InputDecoration(
+                            labelText: 'Pail Count',
+                            hintText: 'Pail Count',
+                          ),
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Please enter the Pail count';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 Padding(

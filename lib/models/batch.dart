@@ -11,6 +11,9 @@ class Batch {
   double hotFillTemp;
   bool lidCheck = false;
   int unitCount = 0;
+  int halfGallonCount = 0;
+  int gallonCount = 0;
+  int pailCount = 0;
   double phPrior;
   double phPost;
   String notes;
@@ -28,6 +31,9 @@ class Batch {
     this.hotFillTemp,
     this.lidCheck = false,
     this.unitCount = 0,
+    this.halfGallonCount = 0,
+    this.gallonCount = 0,
+    this.pailCount = 0,
     this.phPrior,
     this.phPost,
     this.notes,
@@ -42,6 +48,9 @@ class Batch {
       batchId: json['batch_id'],
       date: json['date'],
       unitCount: json['unit_count'] ?? 0,
+      halfGallonCount: json['half_gallon_count'] ?? 0,
+      gallonCount: json['gallon_count'] ?? 0,
+      pailCount: json['pail_count'] ?? 0,
       batchCode: json['batch_code'],
       batchNumber: json['batch_number'],
       cookToTemp: json['cook_to_temp'] ?? false,
@@ -61,6 +70,9 @@ class Batch {
       'batch_id': batchId,
       'date': date,
       'unit_count': unitCount,
+      'half_gallon_count': halfGallonCount,
+      'gallon_count': gallonCount,
+      'pail_count': pailCount,
       'batch_code': batchCode,
       'batch_number': batchNumber,
       'cook_to_temp': cookToTemp,
