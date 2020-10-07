@@ -141,22 +141,29 @@ class _ProductBatchesState extends State<ProductBatches> {
   }
 
   void newBatchClickHandler(BuildContext context) {
-    Batch _lastBatch = _batches.reduce((curr, next) {
-      if (next == null) {
-        return curr;
-      } else {
-        if (curr.batchNumber > next.batchNumber) {
+    Batch _lastBatch;
+    if (_batches.length > 0) {
+      _lastBatch = _batches.reduce((curr, next) {
+        if (next == null) {
           return curr;
         } else {
-          return next;
+          if (curr.batchNumber > next.batchNumber) {
+            return curr;
+          } else {
+            return next;
+          }
         }
-      }
-    });
+      });
+    }
     Batch _batch = Batch(
       productId: product.productId,
       date: Timestamp.now(),
     );
-    _batch.batchNumber = _lastBatch.batchNumber + 1;
+    if (_lastBatch != null) {
+      _batch.batchNumber = _lastBatch.batchNumber + 1;
+    } else {
+      _batch.batchNumber = 1;
+    }
     navigateToBatch(context, _batch);
   }
 
