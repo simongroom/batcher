@@ -131,6 +131,7 @@ class _ProductBatchesState extends State<ProductBatches> {
         builder: (context) => BatchDetail(
           batch: batch,
           productCode: product.productCode,
+          isColdFill: product.isColdFill,
         ),
       ),
     ).then((value) {

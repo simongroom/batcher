@@ -6,16 +6,19 @@ import 'package:uuid/uuid.dart';
 class BatchDetail extends StatefulWidget {
   final Batch batch;
   final int productCode;
+  final bool isColdFill;
 
   BatchDetail({
     @required this.batch,
     @required this.productCode,
+    @required this.isColdFill,
   });
 
   @override
   _BatchDetailState createState() => _BatchDetailState(
         batch: batch,
         productCode: productCode,
+        isColdFill: isColdFill,
       );
 }
 
@@ -23,6 +26,7 @@ class _BatchDetailState extends State<BatchDetail> {
   final _formKey = GlobalKey<FormState>();
   final Batch batch;
   final int productCode;
+  final bool isColdFill;
 
   final CollectionReference batches =
       FirebaseFirestore.instance.collection('batches');
@@ -30,6 +34,7 @@ class _BatchDetailState extends State<BatchDetail> {
   _BatchDetailState({
     @required this.batch,
     @required this.productCode,
+    @required this.isColdFill,
   });
 
   @override
@@ -168,46 +173,50 @@ class _BatchDetailState extends State<BatchDetail> {
                     ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextFormField(
-                    initialValue: batch.hotFillTemp?.toString(),
-                    keyboardType: TextInputType.number,
-                    onChanged: (val) {
-                      batch.hotFillTemp = double.parse(val);
-                    },
-                    decoration: const InputDecoration(
-                      labelText: 'Hot Fill Temp',
-                      hintText: 'Hot Fill Temp',
-                    ),
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Please enter the Hot Fill Temp';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextFormField(
-                    initialValue: batch.phPrior?.toString(),
-                    keyboardType: TextInputType.number,
-                    onChanged: (val) {
-                      batch.phPrior = double.parse(val);
-                    },
-                    decoration: const InputDecoration(
-                      labelText: 'ph Prior',
-                      hintText: 'ph Prior',
-                    ),
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Please enter the ph Prior value';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
+                isColdFill
+                    ? Container()
+                    : Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          initialValue: batch.hotFillTemp?.toString(),
+                          keyboardType: TextInputType.number,
+                          onChanged: (val) {
+                            batch.hotFillTemp = double.parse(val);
+                          },
+                          decoration: const InputDecoration(
+                            labelText: 'Hot Fill Temp',
+                            hintText: 'Hot Fill Temp',
+                          ),
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Please enter the Hot Fill Temp';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                isColdFill
+                    ? Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          initialValue: batch.phPrior?.toString(),
+                          keyboardType: TextInputType.number,
+                          onChanged: (val) {
+                            batch.phPrior = double.parse(val);
+                          },
+                          decoration: const InputDecoration(
+                            labelText: 'ph Prior',
+                            hintText: 'ph Prior',
+                          ),
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Please enter the ph Prior value';
+                            }
+                            return null;
+                          },
+                        ),
+                      )
+                    : Container(),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
@@ -228,16 +237,18 @@ class _BatchDetailState extends State<BatchDetail> {
                     },
                   ),
                 ),
-                CheckboxListTile(
-                  title: Text("Cook To Temp"),
-                  value: batch.cookToTemp,
-                  onChanged: (newValue) {
-                    setState(() {
-                      batch.cookToTemp = newValue ?? false;
-                    });
-                  },
-                  controlAffinity: ListTileControlAffinity.platform,
-                ),
+                isColdFill
+                    ? Container()
+                    : CheckboxListTile(
+                        title: Text("Cook To Temp"),
+                        value: batch.cookToTemp,
+                        onChanged: (newValue) {
+                          setState(() {
+                            batch.cookToTemp = newValue ?? false;
+                          });
+                        },
+                        controlAffinity: ListTileControlAffinity.platform,
+                      ),
                 CheckboxListTile(
                   title: Text("Lid Check"),
                   value: batch.lidCheck,
