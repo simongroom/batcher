@@ -110,6 +110,19 @@ class _ProductDetailState extends State<ProductDetail> {
               },
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SwitchListTile(
+              title: const Text('Cold Fill'),
+              value: product.isColdFill,
+              onChanged: (bool value) {
+                setState(() {
+                  product.isColdFill = value;
+                });
+              },
+              secondary: const Icon(Icons.thermostat_sharp),
+            ),
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
