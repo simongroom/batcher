@@ -2,6 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class Batch {
+  final CollectionReference batches =
+      FirebaseFirestore.instance.collection('batches');
+
   String batchId;
   String productId;
   int batchNumber;
@@ -105,5 +108,9 @@ class Batch {
       String productCodeString = convertIntToString(productCode);
       return "$batchCodeString-$productCodeString";
     }
+  }
+
+  Future save() async {
+    return batches.doc(batchId).set(toJson());
   }
 }
