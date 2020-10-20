@@ -1,4 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Product {
+  final CollectionReference products =
+      FirebaseFirestore.instance.collection('products');
+
   String productId;
   String clientName;
   String productName;
@@ -36,5 +41,9 @@ class Product {
       'is_cold_fill': isColdFill,
     };
     return _data;
+  }
+
+  Future save() async {
+    return products.doc(productId).set(toJson());
   }
 }
