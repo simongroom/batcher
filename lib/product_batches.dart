@@ -130,8 +130,7 @@ class _ProductBatchesState extends State<ProductBatches> {
       MaterialPageRoute(
         builder: (context) => BatchDetail(
           batch: batch,
-          productCode: product.productCode,
-          isColdFill: product.isColdFill,
+          product: product,
         ),
       ),
     ).then((value) {

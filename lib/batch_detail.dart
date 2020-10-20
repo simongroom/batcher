@@ -1,40 +1,37 @@
+import 'package:batcher/batch_pdf.dart';
 import 'package:batcher/models/batch.dart';
+import 'package:batcher/models/product.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
 class BatchDetail extends StatefulWidget {
   final Batch batch;
-  final int productCode;
-  final bool isColdFill;
+  final Product product;
 
   BatchDetail({
     @required this.batch,
-    @required this.productCode,
-    @required this.isColdFill,
+    @required this.product,
   });
 
   @override
   _BatchDetailState createState() => _BatchDetailState(
         batch: batch,
-        productCode: productCode,
-        isColdFill: isColdFill,
+        product: product,
       );
 }
 
 class _BatchDetailState extends State<BatchDetail> {
   final _formKey = GlobalKey<FormState>();
   final Batch batch;
-  final int productCode;
-  final bool isColdFill;
+  final Product product;
 
   final CollectionReference batches =
       FirebaseFirestore.instance.collection('batches');
 
   _BatchDetailState({
     @required this.batch,
-    @required this.productCode,
-    @required this.isColdFill,
+    @required this.product,
   });
 
   @override
@@ -73,7 +70,7 @@ class _BatchDetailState extends State<BatchDetail> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
-                    initialValue: batch.buildBatchCode(productCode),
+                    initialValue: batch.buildBatchCode(product.productCode),
                     keyboardType: TextInputType.text,
                     onChanged: (val) {
                       batch.batchCode = val;
@@ -173,7 +170,7 @@ class _BatchDetailState extends State<BatchDetail> {
                     ],
                   ),
                 ),
-                isColdFill
+                product.isColdFill
                     ? Container()
                     : Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -195,7 +192,7 @@ class _BatchDetailState extends State<BatchDetail> {
                           },
                         ),
                       ),
-                isColdFill
+                product.isColdFill
                     ? Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextFormField(
@@ -237,7 +234,7 @@ class _BatchDetailState extends State<BatchDetail> {
                     },
                   ),
                 ),
-                isColdFill
+                product.isColdFill
                     ? Container()
                     : CheckboxListTile(
                         title: Text("Cook To Temp"),
