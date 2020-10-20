@@ -62,8 +62,8 @@ class Batch {
           : null,
       lidCheck: json['lid_check'] ?? false,
       ingredientsVerified: json['ingredients_verified'] ?? false,
-      phPost: json['ph_post'],
-      phPrior: json['ph_prior'],
+      phPost: json['ph_post'] != null ? json['ph_post'].toDouble() : null,
+      phPrior: json['ph_prior'] != null ? json['ph_prior'].toDouble() : null,
       initials: json['initials'],
       notes: json['notes'],
     );
