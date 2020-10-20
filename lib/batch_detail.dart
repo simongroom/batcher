@@ -35,7 +35,8 @@ class _BatchDetailState extends State<BatchDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Batch: ${batch.buildBatchCode(product.productCode)}"),
+        title: Text(
+            "Batch: ${batch.buildBatchCode(product.productCode, product.reverseBatchCode)}"),
         actions: [
           ElevatedButton(
             onPressed: () {
@@ -77,7 +78,8 @@ class _BatchDetailState extends State<BatchDetail> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
-                    initialValue: batch.buildBatchCode(product.productCode),
+                    initialValue: batch.buildBatchCode(
+                        product.productCode, product.reverseBatchCode),
                     keyboardType: TextInputType.text,
                     onChanged: (val) {
                       batch.batchCode = val;

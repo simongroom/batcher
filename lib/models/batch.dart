@@ -100,13 +100,15 @@ class Batch {
     return s;
   }
 
-  String buildBatchCode(int productCode) {
+  String buildBatchCode(int productCode, bool reverseBatchCode) {
     if (batchCode != null) {
       return batchCode;
     } else {
       String batchCodeString = convertIntToString(batchNumber);
       String productCodeString = convertIntToString(productCode);
-      return "$batchCodeString-$productCodeString";
+      return reverseBatchCode
+          ? "$productCodeString-$batchCodeString"
+          : "$batchCodeString-$productCodeString";
     }
   }
 

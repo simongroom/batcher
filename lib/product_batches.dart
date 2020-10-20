@@ -86,7 +86,7 @@ class _ProductBatchesState extends State<ProductBatches> {
                     child: ListTile(
                       leading: Text(formatTimeStampToDateString(batch.date)),
                       title: Text(
-                          "Batch: ${batch.buildBatchCode(product.productCode)}"),
+                          "Batch: ${batch.buildBatchCode(product.productCode, product.reverseBatchCode)}"),
                       subtitle: Text(
                           "Unit Count: ${batch.unitCount.toString()} | Half Gallon Count: ${batch.halfGallonCount.toString()} | Gallon Count: ${batch.gallonCount.toString()} | Pail Count: ${batch.pailCount.toString()}"),
                       trailing: Icon(

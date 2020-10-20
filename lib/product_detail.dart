@@ -138,6 +138,16 @@ class _ProductDetailState extends State<ProductDetail> {
               },
               secondary: const Icon(Icons.thermostat_sharp),
             ),
+            SwitchListTile(
+              title: const Text('Reverse Batch Code'),
+              value: product.reverseBatchCode,
+              onChanged: (bool value) {
+                setState(() {
+                  product.reverseBatchCode = value;
+                });
+              },
+              secondary: const Icon(Icons.compare_arrows),
+            ),
           ],
         ),
       ),
