@@ -22,7 +22,6 @@ class Batch {
   String notes;
   bool ingredientsVerified = false;
   String initials;
-  bool isComplete;
 
   Batch({
     @required this.productId,
@@ -42,7 +41,6 @@ class Batch {
     this.notes,
     this.ingredientsVerified = false,
     this.initials,
-    this.isComplete,
   });
 
   factory Batch.fromJson(Map<String, dynamic> json) {
@@ -114,5 +112,28 @@ class Batch {
 
   Future save() async {
     return batches.doc(batchId).set(toJson());
+  }
+
+  bool isComplete(bool isColdFill) {
+    if (unitCount == 0 &&
+        halfGallonCount == 0 &&
+        gallonCount == 0 &&
+        pailCount == 0) {
+      return false;
+    }
+    if (initials?.isEmpty ?? true) {
+      return false;
+    }
+    if (!lidCheck || !ingredientsVerified) {
+      return false;
+    }
+    if (phPost == null) {
+      return false;
+    }
+    if (isColdFill) {
+      return phPrior != null;
+    } else {
+      return cookToTemp && hotFillTemp != null;
+    }
   }
 }

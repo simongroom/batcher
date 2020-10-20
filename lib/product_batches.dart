@@ -89,9 +89,15 @@ class _ProductBatchesState extends State<ProductBatches> {
                           "Batch: ${batch.buildBatchCode(product.productCode, product.reverseBatchCode)}"),
                       subtitle: Text(
                           "Unit Count: ${batch.unitCount.toString()} | Half Gallon Count: ${batch.halfGallonCount.toString()} | Gallon Count: ${batch.gallonCount.toString()} | Pail Count: ${batch.pailCount.toString()}"),
-                      trailing: Icon(
-                        Icons.arrow_forward,
-                      ),
+                      trailing: batch.isComplete(product.isColdFill)
+                          ? Icon(
+                              Icons.check_circle,
+                              color: Colors.green,
+                            )
+                          : Icon(
+                              Icons.error,
+                              color: Colors.red,
+                            ),
                     ),
                   ),
                 );
