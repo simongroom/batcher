@@ -1,4 +1,4 @@
-package com.example.batcher
+package com.pronkoenterprises.batcher
 
 import io.flutter.embedding.android.FlutterActivity
 
