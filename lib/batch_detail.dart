@@ -26,9 +26,6 @@ class _BatchDetailState extends State<BatchDetail> {
   final Batch batch;
   final Product product;
 
-  final CollectionReference batches =
-      FirebaseFirestore.instance.collection('batches');
-
   _BatchDetailState({
     @required this.batch,
     @required this.product,
@@ -328,10 +325,8 @@ class _BatchDetailState extends State<BatchDetail> {
             // this is a new batch, create id
             batch.batchId = Uuid().v4();
           }
-          batches
-              .doc(batch.batchId)
-              .set(batch.toJson())
-              .then((value) => Navigator.pop(context));
+          product.save().then(
+              (value) => batch.save().then((value) => Navigator.pop(context)));
         },
         child: Icon(
           Icons.save,
