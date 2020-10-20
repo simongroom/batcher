@@ -54,7 +54,9 @@ class Batch {
       batchCode: json['batch_code'],
       batchNumber: json['batch_number'],
       cookToTemp: json['cook_to_temp'] ?? false,
-      hotFillTemp: json['hot_fill_temp'],
+      hotFillTemp: json['hot_fill_temp'] != null
+          ? json['hot_fill_temp'].toDouble()
+          : null,
       lidCheck: json['lid_check'] ?? false,
       ingredientsVerified: json['ingredients_verified'] ?? false,
       phPost: json['ph_post'],
