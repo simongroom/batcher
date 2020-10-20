@@ -38,7 +38,17 @@ class _BatchDetailState extends State<BatchDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Batch: ${batch.buildBatchCode(productCode)}"),
+        title: Text("Batch: ${batch.buildBatchCode(product.productCode)}"),
+        actions: [
+          ElevatedButton(
+            onPressed: () {
+              reportView(context, batch, product);
+            },
+            child: Icon(
+              Icons.report,
+            ),
+          )
+        ],
       ),
       body: Center(
         child: SingleChildScrollView(
