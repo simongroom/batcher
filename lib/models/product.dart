@@ -10,6 +10,7 @@ class Product {
   int productCode;
   int shelfLife;
   bool isColdFill = false;
+  int nextBatchNumber;
 
   Product({
     this.productId,
@@ -18,6 +19,7 @@ class Product {
     this.productCode,
     this.shelfLife,
     this.isColdFill = false,
+    this.nextBatchNumber,
   });
 
   factory Product.fromJson(Map<String, dynamic> json) {
@@ -28,6 +30,7 @@ class Product {
       productCode: json['product_code'],
       shelfLife: json['shelf_life'],
       isColdFill: json['is_cold_fill'] ?? false,
+      nextBatchNumber: json['next_batch_number'],
     );
   }
 
@@ -39,6 +42,7 @@ class Product {
       'product_code': productCode,
       'shelf_life': shelfLife,
       'is_cold_fill': isColdFill,
+      'next_batch_number': nextBatchNumber,
     };
     return _data;
   }
