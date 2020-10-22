@@ -3,6 +3,7 @@ import 'package:batcher/models/batch.dart';
 import 'package:batcher/models/product.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
 class BatchDetail extends StatefulWidget {
@@ -65,7 +66,9 @@ class _BatchDetailState extends State<BatchDetail> {
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
                     keyboardType: TextInputType.datetime,
-                    initialValue: batch.date.toDate().toString(),
+                    initialValue: DateFormat("yyyy-MM-dd")
+                        .format(batch.date.toDate())
+                        .toString(),
                     onChanged: (val) {
                       DateTime _date = DateTime.parse(val);
                       widget.batch.date = Timestamp.fromDate(_date);
