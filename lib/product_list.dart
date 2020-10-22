@@ -82,7 +82,7 @@ class _ProductListState extends State<ProductList> {
         child: Icon(Icons.add),
         onPressed: () {
           Product _product = Product(
-            productName: "New Product",
+            productName: "",
           );
           Navigator.push(
             context,
