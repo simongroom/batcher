@@ -35,8 +35,15 @@ class _BatchDetailState extends State<BatchDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-            "Batch: ${batch.buildBatchCode(product.productCode, product.reverseBatchCode)}"),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              "Batch: ${batch.buildBatchCode(product.productCode, product.reverseBatchCode)}",
+            ),
+            Text('${product.clientName} - ${product.productName}'),
+          ],
+        ),
         actions: [
           ElevatedButton(
             onPressed: () {
