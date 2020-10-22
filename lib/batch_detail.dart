@@ -195,7 +195,8 @@ class _BatchDetailState extends State<BatchDetail> {
                         padding: const EdgeInsets.all(8.0),
                         child: TextFormField(
                           initialValue: batch.hotFillTemp?.toString(),
-                          keyboardType: TextInputType.number,
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           onChanged: (val) {
                             batch.hotFillTemp = double.parse(val);
                           },
@@ -216,7 +217,8 @@ class _BatchDetailState extends State<BatchDetail> {
                         padding: const EdgeInsets.all(8.0),
                         child: TextFormField(
                           initialValue: batch.phPrior?.toString(),
-                          keyboardType: TextInputType.number,
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           onChanged: (val) {
                             batch.phPrior = double.parse(val);
                           },
@@ -237,7 +239,8 @@ class _BatchDetailState extends State<BatchDetail> {
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
                     initialValue: batch.phPost?.toString(),
-                    keyboardType: TextInputType.number,
+                    keyboardType:
+                        TextInputType.numberWithOptions(decimal: true),
                     onChanged: (val) {
                       batch.phPost = double.parse(val);
                     },
