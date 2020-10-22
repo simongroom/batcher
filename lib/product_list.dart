@@ -27,6 +27,7 @@ class _ProductListState extends State<ProductList> {
       productList = _products.docs.map((p) {
         return Product.fromJson(p.data());
       }).toList();
+      productList.sort((a, b) => a.clientName.compareTo(b.clientName));
     });
   }
 
@@ -70,8 +71,8 @@ class _ProductListState extends State<ProductList> {
               },
               splashColor: Colors.blue.withAlpha(30),
               child: ListTile(
-                title: Text(productList[index].productName),
-                subtitle: Text(productList[index].clientName),
+                title: Text(productList[index].clientName),
+                subtitle: Text(productList[index].productName),
               ),
             ),
           );
