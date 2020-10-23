@@ -73,6 +73,7 @@ class _ProductListState extends State<ProductList> {
               child: ListTile(
                 title: Text(productList[index].clientName),
                 subtitle: Text(productList[index].productName),
+                trailing: Icon(Icons.arrow_forward),
               ),
             ),
           );
