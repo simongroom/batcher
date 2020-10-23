@@ -85,8 +85,7 @@ class _ProductBatchesState extends State<ProductBatches> {
                     splashColor: Colors.blue.withAlpha(30),
                     child: ListTile(
                       leading: Text(formatTimeStampToDateString(batch.date)),
-                      title: Text(
-                          "Batch: ${batch.buildBatchCode(product.productCode, product.reverseBatchCode)}"),
+                      title: Text("Batch: ${batch.batchCode}"),
                       subtitle: Text(
                           "Unit Count: ${batch.unitCount.toString()} | Half Gallon Count: ${batch.halfGallonCount.toString()} | Gallon Count: ${batch.gallonCount.toString()} | Pail Count: ${batch.pailCount.toString()}"),
                       trailing: batch.isComplete(product.isColdFill)
@@ -179,7 +178,26 @@ class _ProductBatchesState extends State<ProductBatches> {
     }
     _batch.batchNumber = _nextBatchNumber;
     product.nextBatchNumber = null;
+    _batch.batchCode = buildBatchCode(
+        _batch.batchNumber, product.productCode, product.reverseBatchCode);
     navigateToBatch(context, _batch);
+  }
+
+  String buildBatchCode(
+      int batchNumber, int productCode, bool reverseBatchCode) {
+    String batchCodeString = convertIntToString(batchNumber);
+    String productCodeString = convertIntToString(productCode);
+    return reverseBatchCode
+        ? "$productCodeString-$batchCodeString"
+        : "$batchCodeString-$productCodeString";
+  }
+
+  String convertIntToString(int i) {
+    String s = i.toString();
+    if (i < 10) {
+      s = "0" + i.toString();
+    }
+    return s;
   }
 
   String formatTimeStampToDateString(Timestamp timestamp) {

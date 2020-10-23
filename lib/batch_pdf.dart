@@ -34,7 +34,7 @@ reportView(BuildContext context, Batch batch, Product product) async {
               child: widgets.Align(
                 alignment: widgets.Alignment.center,
                 child: widgets.Text(
-                  'Batch: ${batch.buildBatchCode(product.productCode, product.reverseBatchCode)}',
+                  'Batch: ${batch.batchCode}',
                   style: widgets.TextStyle(
                     fontSize: 36,
                     fontWeight: widgets.FontWeight.bold,

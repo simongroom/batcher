@@ -99,18 +99,6 @@ class Batch {
     return s;
   }
 
-  String buildBatchCode(int productCode, bool reverseBatchCode) {
-    if (batchCode != null) {
-      return batchCode;
-    } else {
-      String batchCodeString = convertIntToString(batchNumber);
-      String productCodeString = convertIntToString(productCode);
-      return reverseBatchCode
-          ? "$productCodeString-$batchCodeString"
-          : "$batchCodeString-$productCodeString";
-    }
-  }
-
   Future save(bool isColdFill) async {
     return batches.doc(batchId).set(toJson(isColdFill));
   }

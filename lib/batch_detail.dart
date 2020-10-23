@@ -40,7 +40,7 @@ class _BatchDetailState extends State<BatchDetail> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "Batch: ${batch.buildBatchCode(product.productCode, product.reverseBatchCode)}",
+              "Batch: ${batch.batchCode}",
             ),
             Text('${product.clientName} - ${product.productName}'),
           ],
@@ -88,8 +88,7 @@ class _BatchDetailState extends State<BatchDetail> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
-                    initialValue: batch.buildBatchCode(
-                        product.productCode, product.reverseBatchCode),
+                    initialValue: batch.batchCode,
                     keyboardType: TextInputType.text,
                     onChanged: (val) {
                       batch.batchCode = val;
@@ -340,8 +339,9 @@ class _BatchDetailState extends State<BatchDetail> {
             // this is a new batch, create id
             batch.batchId = Uuid().v4();
           }
-          product.save().then(
-              (value) => batch.save().then((value) => Navigator.pop(context)));
+          product.save().then((value) => batch
+              .save(product.isColdFill)
+              .then((value) => Navigator.pop(context)));
         },
         child: Icon(
           Icons.save,
