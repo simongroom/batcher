@@ -91,14 +91,6 @@ class Batch {
     return _data;
   }
 
-  String convertIntToString(int i) {
-    String s = i.toString();
-    if (i < 10) {
-      s = "0" + i.toString();
-    }
-    return s;
-  }
-
   Future save(bool isColdFill) async {
     return batches.doc(batchId).set(toJson(isColdFill));
   }
