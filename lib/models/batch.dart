@@ -67,7 +67,7 @@ class Batch {
     );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson(bool isColdFill) {
     Map<String, dynamic> _data = {
       'product_id': productId,
       'batch_id': batchId,
@@ -86,6 +86,7 @@ class Batch {
       'ph_prior': phPrior,
       'initials': initials,
       'notes': notes,
+      'is_complete': isComplete(isColdFill),
     };
     return _data;
   }
@@ -110,8 +111,8 @@ class Batch {
     }
   }
 
-  Future save() async {
-    return batches.doc(batchId).set(toJson());
+  Future save(bool isColdFill) async {
+    return batches.doc(batchId).set(toJson(isColdFill));
   }
 
   bool isComplete(bool isColdFill) {
