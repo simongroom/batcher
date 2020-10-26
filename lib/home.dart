@@ -21,7 +21,14 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     _children.add(ProductList());
-    _children.add(BatchList());
+    _children.add(new BatchList(
+      UniqueKey(),
+      BatchListType.incomplete,
+    ));
+    _children.add(new BatchList(
+      UniqueKey(),
+      BatchListType.unbilled,
+    ));
     super.initState();
   }
 
@@ -50,6 +57,10 @@ class _HomePageState extends State<HomePage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.list_alt),
             label: 'Incomplete Batches',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.money),
+            label: 'Unbilled Batches',
           )
         ],
       ),
