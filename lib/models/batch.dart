@@ -23,6 +23,7 @@ class Batch {
   String notes;
   bool ingredientsVerified = false;
   String initials;
+  bool billingComplete = false;
 
   Batch({
     @required this.productId,
@@ -43,6 +44,7 @@ class Batch {
     this.notes,
     this.ingredientsVerified = false,
     this.initials,
+    this.billingComplete = false,
   });
 
   factory Batch.fromJson(Map<String, dynamic> json) {
@@ -69,6 +71,7 @@ class Batch {
       phPrior: json['ph_prior'] != null ? json['ph_prior'].toDouble() : null,
       initials: json['initials'],
       notes: json['notes'],
+      billingComplete: json['billing_complete'] ?? false,
     );
   }
 
@@ -92,6 +95,7 @@ class Batch {
       'ph_prior': phPrior,
       'initials': initials,
       'notes': notes,
+      'billing_complete': billingComplete,
       'is_complete': isComplete(isColdFill),
     };
     return _data;
