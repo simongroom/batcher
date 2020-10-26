@@ -64,25 +64,46 @@ class _BatchDetailState extends State<BatchDetail> {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: TextFormField(
-                    keyboardType: TextInputType.datetime,
-                    initialValue: DateFormat("yyyy-MM-dd")
-                        .format(batch.date.toDate())
-                        .toString(),
-                    onChanged: (val) {
-                      DateTime _date = DateTime.parse(val);
-                      widget.batch.date = Timestamp.fromDate(_date);
-                    },
-                    decoration: const InputDecoration(
-                      labelText: 'Processing Date',
-                      hintText: 'YYYY-mm-dd',
-                    ),
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Please enter the processing date';
-                      }
-                      return null;
-                    },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: TextFormField(
+                          keyboardType: TextInputType.datetime,
+                          initialValue: DateFormat("yyyy-MM-dd")
+                              .format(batch.date.toDate())
+                              .toString(),
+                          onChanged: (val) {
+                            DateTime _date = DateTime.parse(val);
+                            widget.batch.date = Timestamp.fromDate(_date);
+                          },
+                          decoration: const InputDecoration(
+                            labelText: 'Processing Date',
+                            hintText: 'YYYY-mm-dd',
+                          ),
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Please enter the processing date';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                      Expanded(
+                        child: SwitchListTile(
+                          title: Text(
+                            "Billing Complete",
+                            textAlign: TextAlign.right,
+                          ),
+                          value: batch.billingComplete,
+                          onChanged: (val) {
+                            setState(() {
+                              batch.billingComplete = val;
+                            });
+                          },
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 Padding(
