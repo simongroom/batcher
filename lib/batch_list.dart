@@ -4,12 +4,30 @@ import 'package:batcher/models/product.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+enum BatchListType {
+  incomplete,
+  unbilled,
+}
+
 class BatchList extends StatefulWidget {
+  final BatchListType listType;
+
+  BatchList(
+    Key key,
+    this.listType,
+  ) : super(key: key);
+
   @override
-  _BatchListState createState() => _BatchListState();
+  _BatchListState createState() => _BatchListState(listType);
 }
 
 class _BatchListState extends State<BatchList> {
+  final BatchListType listType;
+
+  _BatchListState(
+    this.listType,
+  );
+
   final CollectionReference batches =
       FirebaseFirestore.instance.collection('batches');
   final CollectionReference productsCollection =
@@ -63,7 +81,9 @@ class _BatchListState extends State<BatchList> {
           if (snapshot.data.docs.length == 0) {
             return Center(
               child: Text(
-                "No Incomplete Batches",
+                listType == BatchListType.incomplete
+                    ? "No Incomplete Batches"
+                    : "No Unbilled Batches",
                 style: TextStyle(
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
@@ -112,7 +132,10 @@ class _BatchListState extends State<BatchList> {
   Future getData() async {
     return getBatchList().then((snapshot) async {
       snapshot.docs.forEach((doc) {
-        productIds.add(doc.data()['product_id']);
+        String productId = doc.data()['product_id'];
+        if (productIds.indexOf(productId) == -1) {
+          productIds.add(doc.data()['product_id']);
+        }
       });
       if (productIds.length > 0) {
         var _productsDoc = await getProductList();
@@ -125,13 +148,19 @@ class _BatchListState extends State<BatchList> {
   }
 
   Future getBatchList() async {
-    return batches
-        .where(
-          'is_complete',
-          isEqualTo: false,
-        )
-        .orderBy('date', descending: true)
-        .get();
+    String whereClause =
+        listType == BatchListType.unbilled ? 'billing_complete' : 'is_complete';
+    Query query = batches.where(
+      whereClause,
+      isEqualTo: false,
+    );
+    if (listType == BatchListType.unbilled) {
+      query = query.where(
+        'is_complete',
+        isEqualTo: true,
+      );
+    }
+    return query.orderBy('date', descending: true).get();
   }
 
   Future getProductList() async {
