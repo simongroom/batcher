@@ -107,6 +107,27 @@ class _BatchDetailState extends State<BatchDetail> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    initialValue: batch.batchMultiple?.toString(),
+                    keyboardType:
+                        TextInputType.numberWithOptions(decimal: true),
+                    onChanged: (val) {
+                      batch.batchMultiple = double.parse(val);
+                    },
+                    decoration: const InputDecoration(
+                      labelText: 'Batch Multiple',
+                      hintText: 'Batch Multiple',
+                    ),
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'Please enter the Batch Multiple value';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
                   child: Row(
                     children: [
                       Expanded(
