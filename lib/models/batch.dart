@@ -10,6 +10,7 @@ class Batch {
   int batchNumber;
   String batchCode;
   Timestamp date;
+  double batchMultiple;
   bool cookToTemp = false;
   double hotFillTemp;
   bool lidCheck = false;
@@ -29,6 +30,7 @@ class Batch {
     this.batchCode,
     this.batchNumber,
     this.date,
+    this.batchMultiple = 1.0,
     this.cookToTemp = false,
     this.hotFillTemp,
     this.lidCheck = false,
@@ -48,6 +50,9 @@ class Batch {
       productId: json['product_id'],
       batchId: json['batch_id'],
       date: json['date'],
+      batchMultiple: json['batch_multiple'] != null
+          ? json['batch_multiple'].toDouble()
+          : null,
       unitCount: json['unit_count'] ?? 0,
       halfGallonCount: json['half_gallon_count'] ?? 0,
       gallonCount: json['gallon_count'] ?? 0,
@@ -72,6 +77,7 @@ class Batch {
       'product_id': productId,
       'batch_id': batchId,
       'date': date,
+      'batch_multiple': batchMultiple,
       'unit_count': unitCount,
       'half_gallon_count': halfGallonCount,
       'gallon_count': gallonCount,
@@ -108,7 +114,7 @@ class Batch {
     if (!lidCheck || !ingredientsVerified) {
       return false;
     }
-    if (phPost == null) {
+    if (phPost == null || batchMultiple == null) {
       return false;
     }
     if (isColdFill) {
