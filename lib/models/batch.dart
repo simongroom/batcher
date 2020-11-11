@@ -105,6 +105,10 @@ class Batch {
     return batches.doc(batchId).set(toJson(isColdFill));
   }
 
+  Future delete() async {
+    return batches.doc(batchId).delete();
+  }
+
   bool isComplete(bool isColdFill) {
     if (unitCount == 0 &&
         halfGallonCount == 0 &&
