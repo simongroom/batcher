@@ -77,26 +77,45 @@ class _ProductBatchesState extends State<ProductBatches> {
               itemBuilder: (context, index) {
                 Batch batch = Batch.fromJson(snapshot.data.docs[index].data());
                 _batches.add(batch);
-                return Card(
-                  child: InkWell(
-                    onTap: () {
-                      navigateToBatch(context, batch);
-                    },
-                    splashColor: Colors.blue.withAlpha(30),
-                    child: ListTile(
-                      leading: Text(formatTimeStampToDateString(batch.date)),
-                      title: Text("Batch: ${batch.batchCode}"),
-                      subtitle: Text(
-                          "Unit Count: ${batch.unitCount.toString()} | Half Gallon Count: ${batch.halfGallonCount.toString()} | Gallon Count: ${batch.gallonCount.toString()} | Pail Count: ${batch.pailCount.toString()}"),
-                      trailing: batch.isComplete(product.isColdFill)
-                          ? Icon(
-                              Icons.check_circle,
-                              color: Colors.green,
-                            )
-                          : Icon(
-                              Icons.error,
-                              color: Colors.red,
-                            ),
+                return Dismissible(
+                  background: Container(
+                    color: Colors.red,
+                  ),
+                  key: UniqueKey(),
+                  onDismissed: (direction) {
+                    setState(() async {
+                      _batches.removeWhere((e) => e.batchId == batch.batchId);
+                      await batch.delete().then((value) {
+                        _getBatchListFuture = getBatchList();
+                        Scaffold.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text("Batch deleted"),
+                          ),
+                        );
+                      });
+                    });
+                  },
+                  child: Card(
+                    child: InkWell(
+                      onTap: () {
+                        navigateToBatch(context, batch);
+                      },
+                      splashColor: Colors.blue.withAlpha(30),
+                      child: ListTile(
+                        leading: Text(formatTimeStampToDateString(batch.date)),
+                        title: Text("Batch: ${batch.batchCode}"),
+                        subtitle: Text(
+                            "Unit Count: ${batch.unitCount.toString()} | Half Gallon Count: ${batch.halfGallonCount.toString()} | Gallon Count: ${batch.gallonCount.toString()} | Pail Count: ${batch.pailCount.toString()}"),
+                        trailing: batch.isComplete(product.isColdFill)
+                            ? Icon(
+                                Icons.check_circle,
+                                color: Colors.green,
+                              )
+                            : Icon(
+                                Icons.error,
+                                color: Colors.red,
+                              ),
+                      ),
                     ),
                   ),
                 );
