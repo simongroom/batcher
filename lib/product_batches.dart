@@ -80,18 +80,40 @@ class _ProductBatchesState extends State<ProductBatches> {
                 return Dismissible(
                   background: Container(
                     color: Colors.red,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "Delete Batch",
+                            style: TextStyle(
+                              fontSize: 24.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "Delete Batch",
+                            style: TextStyle(
+                              fontSize: 24.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   key: UniqueKey(),
                   onDismissed: (direction) {
-                    setState(() async {
-                      _batches.removeWhere((e) => e.batchId == batch.batchId);
-                      await batch.delete().then((value) {
+                    _batches.removeWhere((e) => e.batchId == batch.batchId);
+                    batch.delete().then((value) {
+                      setState(() {
                         _getBatchListFuture = getBatchList();
-                        Scaffold.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text("Batch deleted"),
-                          ),
-                        );
                       });
                     });
                   },
