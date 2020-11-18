@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:batcher/models/batch.dart';
 import 'package:batcher/models/product.dart';
+import 'package:batcher/models/client.dart';
 import 'package:batcher/pdf_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -10,7 +11,8 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as widgets;
 import 'package:universal_html/html.dart' as html;
 
-reportView(BuildContext context, Batch batch, Product product) async {
+reportView(
+    BuildContext context, Batch batch, Product product, Client client) async {
   final widgets.Document pdf = widgets.Document();
 
   pdf.addPage(
@@ -23,7 +25,7 @@ reportView(BuildContext context, Batch batch, Product product) async {
               level: 2,
               child: widgets.Center(
                 child: widgets.Text(
-                    '${product.clientName} - ${product.productName}',
+                    '${client.clientName} - ${product.productName}',
                     style: widgets.TextStyle(
                       fontSize: 16,
                       fontWeight: widgets.FontWeight.bold,
