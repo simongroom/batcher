@@ -5,7 +5,7 @@ class Product {
       FirebaseFirestore.instance.collection('products');
 
   String productId;
-  String clientName;
+  String clientId;
   String productName;
   int productCode;
   int shelfLife;
@@ -15,7 +15,7 @@ class Product {
 
   Product({
     this.productId,
-    this.clientName,
+    this.clientId,
     this.productName,
     this.productCode,
     this.shelfLife,
@@ -27,7 +27,7 @@ class Product {
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
       productId: json['product_id'],
-      clientName: json['client_name'],
+      clientId: json['client_id'],
       productName: json['product_name'],
       productCode: json['product_code'],
       shelfLife: json['shelf_life'],
@@ -40,7 +40,7 @@ class Product {
   Map<String, dynamic> toJson() {
     Map<String, dynamic> _data = {
       'product_id': productId,
-      'client_name': clientName,
+      'client_id': clientId,
       'product_name': productName,
       'product_code': productCode,
       'shelf_life': shelfLife,
