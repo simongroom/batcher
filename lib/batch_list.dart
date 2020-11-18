@@ -1,6 +1,7 @@
 import 'package:batcher/batch_detail.dart';
 import 'package:batcher/models/batch.dart';
 import 'package:batcher/models/product.dart';
+import 'package:batcher/models/client.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -32,10 +33,14 @@ class _BatchListState extends State<BatchList> {
       FirebaseFirestore.instance.collection('batches');
   final CollectionReference productsCollection =
       FirebaseFirestore.instance.collection('products');
+  final CollectionReference clientsCollection =
+      FirebaseFirestore.instance.collection('clients');
 
   Future _getDataFuture;
   List<String> productIds = [];
+  List<String> clientIds = [];
   List<Product> products = [];
+  List<Client> clients = [];
 
   @override
   void initState() {
@@ -99,16 +104,18 @@ class _BatchListState extends State<BatchList> {
                 Batch batch = Batch.fromJson(snapshot.data.docs[index].data());
                 Product product = products.firstWhere(
                     (element) => element.productId == batch.productId);
+                Client client = clients.firstWhere(
+                    (element) => element.clientId == product.clientId);
                 return Card(
                   child: InkWell(
                     onTap: () {
-                      navigateToBatch(context, batch, product);
+                      navigateToBatch(context, batch, product, client);
                     },
                     splashColor: Colors.blue.withAlpha(30),
                     child: ListTile(
                       leading: Text(formatTimeStampToDateString(batch.date)),
-                      title: Text(
-                          "${product.clientName} | ${product.productName}"),
+                      title:
+                          Text("${client.clientName} | ${product.productName}"),
                       subtitle: Text("Batch: ${batch.batchCode}"),
                       trailing: Icon(
                         Icons.error,
@@ -142,7 +149,17 @@ class _BatchListState extends State<BatchList> {
         _productsDoc.docs.forEach((product) {
           products.add(Product.fromJson(product.data()));
         });
+        products.forEach((Product product) {
+          if (clientIds.indexOf(product.clientId) == -1) {
+            clientIds.add(product.clientId);
+          }
+        });
+        var _clientsDoc = await getClientList();
+        _clientsDoc.docs.forEach((client) {
+          clients.add(Client.fromJson(client.data()));
+        });
       }
+
       return snapshot;
     });
   }
@@ -172,14 +189,28 @@ class _BatchListState extends State<BatchList> {
         .get();
   }
 
+  Future getClientList() async {
+    return clientsCollection
+        .where(
+          'client_id',
+          whereIn: clientIds,
+        )
+        .get();
+  }
+
   void navigateToBatch(
-      BuildContext context, Batch batch, Product product) async {
+    BuildContext context,
+    Batch batch,
+    Product product,
+    Client client,
+  ) async {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => BatchDetail(
           batch: batch,
           product: product,
+          client: client,
         ),
       ),
     ).then((value) {
