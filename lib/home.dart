@@ -1,5 +1,5 @@
 import 'package:batcher/batch_list.dart';
-import 'package:batcher/product_list.dart';
+import 'package:batcher/client_list.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -20,7 +20,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    _children.add(ProductList());
+    _children.add(ClientList());
     _children.add(new BatchList(
       UniqueKey(),
       BatchListType.incomplete,
@@ -52,7 +52,7 @@ class _HomePageState extends State<HomePage> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.list),
-            label: 'Products',
+            label: 'Clients',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.list_alt),
