@@ -1,15 +1,15 @@
-import 'package:batcher/models/product.dart';
-import 'package:batcher/product_view.dart';
+import 'package:batcher/models/client.dart';
+import 'package:batcher/product_list.dart';
 import 'package:flutter/material.dart';
 
-class ProductSearch extends SearchDelegate {
-  final List<Product> productList;
+class ClientSearch extends SearchDelegate {
+  final List<Client> clientList;
 
-  ProductSearch({
-    @required this.productList,
+  ClientSearch({
+    @required this.clientList,
   });
 
-  List<Product> recentList = [];
+  List<Client> recentList = [];
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -35,33 +35,29 @@ class ProductSearch extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    List<Product> resultList = [];
-    resultList.addAll(filterProductList());
-    return buildProductListView(resultList);
+    List<Client> resultList = [];
+    resultList.addAll(filterClientList());
+    return buildClientListView(resultList);
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    List<Product> suggestionList = [];
+    List<Client> suggestionList = [];
     query.isEmpty
         ? suggestionList = recentList //In the true case
-        : suggestionList.addAll(filterProductList());
-    return buildProductListView(suggestionList);
+        : suggestionList.addAll(filterClientList());
+    return buildClientListView(suggestionList);
   }
 
-  List<Product> filterProductList() {
-    return productList.where((p) {
-      if (p.clientName.toLowerCase().startsWith(query.toLowerCase()) ||
-          p.productName.toLowerCase().startsWith(query.toLowerCase())) {
-        return true;
-      }
-      return false;
+  List<Client> filterClientList() {
+    return clientList.where((p) {
+      return p.clientName.toLowerCase().contains(query.toLowerCase());
     }).toList();
   }
 
-  ListView buildProductListView(List<Product> products) {
+  ListView buildClientListView(List<Client> clients) {
     return ListView.builder(
-      itemCount: products.length,
+      itemCount: clients.length,
       itemBuilder: (context, index) {
         return Card(
           child: InkWell(
@@ -69,16 +65,15 @@ class ProductSearch extends SearchDelegate {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ProductView(
-                    product: products[index],
+                  builder: (context) => ProductList(
+                    client: clients[index],
                   ),
                 ),
               );
             },
             splashColor: Colors.blue.withAlpha(30),
             child: ListTile(
-              title: Text(products[index].productName),
-              subtitle: Text(products[index].clientName),
+              title: Text(clients[index].clientName),
             ),
           ),
         );
