@@ -1,28 +1,34 @@
 import 'package:batcher/models/product.dart';
+import 'package:batcher/models/client.dart';
 import 'package:batcher/product_batches.dart';
 import 'package:batcher/product_detail.dart';
 import 'package:flutter/material.dart';
 
 class ProductView extends StatefulWidget {
   final Product product;
+  final Client client;
 
   ProductView({
-    this.product,
+    @required this.product,
+    @required this.client,
   });
 
   @override
   _ProductViewState createState() => _ProductViewState(
         product: product,
+        client: client,
       );
 }
 
 class _ProductViewState extends State<ProductView> {
   int _currentIndex = 0;
   final Product product;
+  final Client client;
   final List<Widget> _children = [];
 
   _ProductViewState({
     @required this.product,
+    @required this.client,
   });
 
   void onTabTapped(int index) {
@@ -41,6 +47,7 @@ class _ProductViewState extends State<ProductView> {
     ));
     _children.add(ProductBatches(
       product: product,
+      client: client,
     ));
     super.initState();
   }

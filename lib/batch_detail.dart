@@ -1,6 +1,7 @@
 import 'package:batcher/batch_pdf.dart';
 import 'package:batcher/models/batch.dart';
 import 'package:batcher/models/product.dart';
+import 'package:batcher/models/client.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -9,16 +10,19 @@ import 'package:uuid/uuid.dart';
 class BatchDetail extends StatefulWidget {
   final Batch batch;
   final Product product;
+  final Client client;
 
   BatchDetail({
     @required this.batch,
     @required this.product,
+    @required this.client,
   });
 
   @override
   _BatchDetailState createState() => _BatchDetailState(
         batch: batch,
         product: product,
+        client: client,
       );
 }
 
@@ -26,10 +30,12 @@ class _BatchDetailState extends State<BatchDetail> {
   final _formKey = GlobalKey<FormState>();
   final Batch batch;
   final Product product;
+  final Client client;
 
   _BatchDetailState({
     @required this.batch,
     @required this.product,
+    @required this.client,
   });
 
   @override
@@ -42,13 +48,18 @@ class _BatchDetailState extends State<BatchDetail> {
             Text(
               "Batch: ${batch.batchCode}",
             ),
-            Text('${product.clientName} - ${product.productName}'),
+            Text('${client.clientName} - ${product.productName}'),
           ],
         ),
         actions: [
           ElevatedButton(
             onPressed: () {
-              reportView(context, batch, product);
+              reportView(
+                context,
+                batch,
+                product,
+                client,
+              );
             },
             child: Icon(
               Icons.report,

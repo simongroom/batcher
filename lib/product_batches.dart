@@ -1,24 +1,29 @@
 import 'package:batcher/batch_detail.dart';
 import 'package:batcher/models/batch.dart';
 import 'package:batcher/models/product.dart';
+import 'package:batcher/models/client.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class ProductBatches extends StatefulWidget {
   final Product product;
+  final Client client;
 
   ProductBatches({
-    this.product,
+    @required this.product,
+    @required this.client,
   });
 
   @override
   _ProductBatchesState createState() => _ProductBatchesState(
         product: product,
+        client: client,
       );
 }
 
 class _ProductBatchesState extends State<ProductBatches> {
   final Product product;
+  final Client client;
   final CollectionReference batches =
       FirebaseFirestore.instance.collection('batches');
 
@@ -27,6 +32,7 @@ class _ProductBatchesState extends State<ProductBatches> {
 
   _ProductBatchesState({
     @required this.product,
+    @required this.client,
   });
 
   @override
@@ -177,6 +183,7 @@ class _ProductBatchesState extends State<ProductBatches> {
         builder: (context) => BatchDetail(
           batch: batch,
           product: product,
+          client: client,
         ),
       ),
     ).then((value) {
