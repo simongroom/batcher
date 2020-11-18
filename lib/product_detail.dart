@@ -35,27 +35,6 @@ class _ProductDetailState extends State<ProductDetail> {
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
                   keyboardType: TextInputType.text,
-                  initialValue: product?.clientName,
-                  onChanged: (val) {
-                    product.clientName = val;
-                  },
-                  decoration: const InputDecoration(
-                    labelText: 'Client Name',
-                    hintText: 'Client Name',
-                  ),
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return 'Please enter the client name';
-                    }
-                    return null;
-                  },
-                  textCapitalization: TextCapitalization.words,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  keyboardType: TextInputType.text,
                   initialValue: product?.productName,
                   onChanged: (val) {
                     product.productName = val;
