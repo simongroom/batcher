@@ -94,6 +94,7 @@ class _ProductListState extends State<ProductList> {
         onPressed: () {
           Product _product = Product(
             productName: "",
+            clientId: client.clientId,
           );
           Navigator.push(
             context,
