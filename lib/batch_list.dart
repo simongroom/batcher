@@ -145,21 +145,9 @@ class _BatchListState extends State<BatchList> {
         }
       });
       if (productIds.length > 0) {
-        var _productsDoc = await getProductList();
-        _productsDoc.docs.forEach((product) {
-          products.add(Product.fromJson(product.data()));
-        });
-        products.forEach((Product product) {
-          if (clientIds.indexOf(product.clientId) == -1) {
-            clientIds.add(product.clientId);
-          }
-        });
-        var _clientsDoc = await getClientList();
-        _clientsDoc.docs.forEach((client) {
-          clients.add(Client.fromJson(client.data()));
-        });
+        await getProductList();
+        await getClientList();
       }
-
       return snapshot;
     });
   }
@@ -180,22 +168,51 @@ class _BatchListState extends State<BatchList> {
     return query.orderBy('date', descending: true).get();
   }
 
-  Future getProductList() async {
-    return productsCollection
+  Future processProductIdChunk(productIdChunk) async {
+    var _productsDoc = await productsCollection
         .where(
           'product_id',
-          whereIn: productIds,
+          whereIn: productIdChunk,
         )
         .get();
+    _productsDoc.docs.forEach((product) {
+      products.add(Product.fromJson(product.data()));
+    });
+    products.forEach((Product product) {
+      if (clientIds.indexOf(product.clientId) == -1) {
+        clientIds.add(product.clientId);
+      }
+    });
+    return;
+  }
+
+  Future processClientIdChunk(clientIdChunk) async {
+    var _clientsDoc = await clientsCollection
+        .where(
+          'client_id',
+          whereIn: clientIdChunk,
+        )
+        .get();
+    _clientsDoc.docs.forEach((client) {
+      clients.add(Client.fromJson(client.data()));
+    });
+  }
+
+  Future processIdChunks(idList, chunkCallback) async {
+    var chunks = chunkList(idList);
+    var futures = <Future>[];
+    for (var idChunk in chunks) {
+      futures.add(chunkCallback(idChunk));
+    }
+    await Future.wait(futures);
+  }
+
+  Future getProductList() async {
+    await processIdChunks(productIds, processProductIdChunk);
   }
 
   Future getClientList() async {
-    return clientsCollection
-        .where(
-          'client_id',
-          whereIn: clientIds,
-        )
-        .get();
+    await processIdChunks(clientIds, processClientIdChunk);
   }
 
   void navigateToBatch(
@@ -224,5 +241,16 @@ class _BatchListState extends State<BatchList> {
     DateTime date =
         DateTime.fromMillisecondsSinceEpoch(timestamp.seconds * 1000);
     return "${date.year.toString()}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}";
+  }
+
+  List chunkList(listToChunk) {
+    var len = listToChunk.length;
+    var size = 10;
+    var chunks = [];
+    for (var i = 0; i < len; i += size) {
+      var end = (i + size < len) ? i + size : len;
+      chunks.add(listToChunk.sublist(i, end));
+    }
+    return chunks;
   }
 }
