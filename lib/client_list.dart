@@ -66,22 +66,26 @@ class _ClientListState extends State<ClientList> {
           FlatButton(
               child: const Text('Save'),
               onPressed: () {
-                _client.save().then((response) {
-                  print(response);
-                  Navigator.pop(context);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ProductList(
-                        client: _client,
+                if (_client.clientName.trim().isEmpty) {
+                  return;
+                } else {
+                  _client.save().then((response) {
+                    print(response);
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ProductList(
+                          client: _client,
+                        ),
                       ),
-                    ),
-                  ).then((value) {
-                    setState(() {
-                      getClientList();
+                    ).then((value) {
+                      setState(() {
+                        getClientList();
+                      });
                     });
                   });
-                });
+                }
               })
         ],
       ),
