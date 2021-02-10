@@ -39,7 +39,7 @@ class _ClientListState extends State<ClientList> {
     );
     await showDialog<String>(
       context: context,
-      child: AlertDialog(
+      builder: (BuildContext context) => AlertDialog(
         contentPadding: const EdgeInsets.all(16.0),
         content: Row(
           children: <Widget>[
@@ -58,12 +58,12 @@ class _ClientListState extends State<ClientList> {
           ],
         ),
         actions: <Widget>[
-          FlatButton(
+          ElevatedButton(
               child: const Text('Cancel'),
               onPressed: () {
                 Navigator.pop(context);
               }),
-          FlatButton(
+          ElevatedButton(
               child: const Text('Save'),
               onPressed: () {
                 if (_client.clientName.trim().isEmpty) {

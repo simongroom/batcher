@@ -218,8 +218,8 @@ reportView(
                 ),
                 widgets.Container(
                   decoration: widgets.BoxDecoration(
-                    border: widgets.BoxBorder(
-                      top: true,
+                    border: widgets.Border(
+                      top: widgets.BorderSide(),
                     ),
                   ),
                   child: widgets.Padding(
@@ -243,8 +243,8 @@ reportView(
                     ? widgets.Container()
                     : widgets.Container(
                         decoration: widgets.BoxDecoration(
-                          border: widgets.BoxBorder(
-                            top: true,
+                          border: widgets.Border(
+                            top: widgets.BorderSide(),
                           ),
                         ),
                         child: widgets.Padding(
