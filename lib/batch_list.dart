@@ -159,12 +159,6 @@ class _BatchListState extends State<BatchList> {
       whereClause,
       isEqualTo: false,
     );
-    if (listType == BatchListType.unbilled) {
-      query = query.where(
-        'is_complete',
-        isEqualTo: true,
-      );
-    }
     return query.orderBy('date', descending: true).get();
   }
 
