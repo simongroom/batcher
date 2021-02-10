@@ -42,11 +42,29 @@ class _ProductListState extends State<ProductList> {
     });
   }
 
+  Future deleteClient() {
+    return client.delete().then((value) => Navigator.pop(context));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(client.clientName),
+        actions: [
+          productList.length > 0
+              ? Container()
+              : ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.red),
+                  ),
+                  onPressed: productList.length == 0 ? deleteClient : null,
+                  child: Icon(
+                    Icons.delete_forever,
+                  ),
+                )
+        ],
       ),
       body: productList.length == 0
           ? Center(

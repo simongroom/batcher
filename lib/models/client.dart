@@ -30,4 +30,8 @@ class Client {
   Future save() async {
     return clients.doc(clientId).set(toJson());
   }
+
+  Future delete() async {
+    return clients.doc(clientId).delete();
+  }
 }
