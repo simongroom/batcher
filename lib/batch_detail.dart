@@ -167,10 +167,12 @@ class _BatchDetailState extends State<BatchDetail> {
                           initialValue: batch.unitCount.toString(),
                           keyboardType: TextInputType.number,
                           onChanged: (val) {
-                            batch.unitCount = int.parse(val);
+                            if (val.isNotEmpty) {
+                              batch.unitCount = int.parse(val);
+                            }
                           },
                           decoration: const InputDecoration(
-                            labelText: 'Unit Count',
+                            labelText: 'Units',
                             hintText: 'Unit Count',
                           ),
                           validator: (value) {
@@ -186,10 +188,12 @@ class _BatchDetailState extends State<BatchDetail> {
                           initialValue: batch.halfGallonCount.toString(),
                           keyboardType: TextInputType.number,
                           onChanged: (val) {
-                            batch.halfGallonCount = int.parse(val);
+                            if (val.isNotEmpty) {
+                              batch.halfGallonCount = int.parse(val);
+                            }
                           },
                           decoration: const InputDecoration(
-                            labelText: 'Half Gallon Count',
+                            labelText: 'Half Gallons',
                             hintText: 'Half Gallon Count',
                           ),
                           validator: (value) {
@@ -205,10 +209,12 @@ class _BatchDetailState extends State<BatchDetail> {
                           initialValue: batch.gallonCount.toString(),
                           keyboardType: TextInputType.number,
                           onChanged: (val) {
-                            batch.gallonCount = int.parse(val);
+                            if (val.isNotEmpty) {
+                              batch.gallonCount = int.parse(val);
+                            }
                           },
                           decoration: const InputDecoration(
-                            labelText: 'Gallon Count',
+                            labelText: 'Gallons',
                             hintText: 'Gallon Count',
                           ),
                           validator: (value) {
@@ -224,15 +230,38 @@ class _BatchDetailState extends State<BatchDetail> {
                           initialValue: batch.pailCount.toString(),
                           keyboardType: TextInputType.number,
                           onChanged: (val) {
-                            batch.pailCount = int.parse(val);
+                            if (val.isNotEmpty) {
+                              batch.pailCount = int.parse(val);
+                            }
                           },
                           decoration: const InputDecoration(
-                            labelText: 'Pail Count',
+                            labelText: 'Pails',
                             hintText: 'Pail Count',
                           ),
                           validator: (value) {
                             if (value.isEmpty) {
                               return 'Please enter the Pail count';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                      Expanded(
+                        child: TextFormField(
+                          initialValue: batch.packetCount.toString(),
+                          keyboardType: TextInputType.number,
+                          onChanged: (val) {
+                            if (val.isNotEmpty) {
+                              batch.packetCount = int.parse(val);
+                            }
+                          },
+                          decoration: const InputDecoration(
+                            labelText: 'Packets',
+                            hintText: 'Packet Count',
+                          ),
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Please enter the Packet count';
                             }
                             return null;
                           },

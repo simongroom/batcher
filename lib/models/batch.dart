@@ -18,6 +18,7 @@ class Batch {
   int halfGallonCount = 0;
   int gallonCount = 0;
   int pailCount = 0;
+  int packetCount = 0;
   double phPrior;
   double phPost;
   String notes;
@@ -39,6 +40,7 @@ class Batch {
     this.halfGallonCount = 0,
     this.gallonCount = 0,
     this.pailCount = 0,
+    this.packetCount = 0,
     this.phPrior,
     this.phPost,
     this.notes,
@@ -59,6 +61,7 @@ class Batch {
       halfGallonCount: json['half_gallon_count'] ?? 0,
       gallonCount: json['gallon_count'] ?? 0,
       pailCount: json['pail_count'] ?? 0,
+      packetCount: json['packet_count'] ?? 0,
       batchCode: json['batch_code'],
       batchNumber: json['batch_number'],
       cookToTemp: json['cook_to_temp'] ?? false,
@@ -85,6 +88,7 @@ class Batch {
       'half_gallon_count': halfGallonCount,
       'gallon_count': gallonCount,
       'pail_count': pailCount,
+      'packet_count': packetCount,
       'batch_code': batchCode,
       'batch_number': batchNumber,
       'cook_to_temp': cookToTemp,

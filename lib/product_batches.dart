@@ -133,7 +133,7 @@ class _ProductBatchesState extends State<ProductBatches> {
                         leading: Text(formatTimeStampToDateString(batch.date)),
                         title: Text("Batch: ${batch.batchCode}"),
                         subtitle: Text(
-                            "Unit Count: ${batch.unitCount.toString()} | Half Gallon Count: ${batch.halfGallonCount.toString()} | Gallon Count: ${batch.gallonCount.toString()} | Pail Count: ${batch.pailCount.toString()}"),
+                            "Unit Count: ${batch.unitCount.toString()} | Half Gallon Count: ${batch.halfGallonCount.toString()} | Gallon Count: ${batch.gallonCount.toString()} | Pail Count: ${batch.pailCount.toString()} | Packet Count: ${batch.packetCount.toString()}"),
                         trailing: batch.isComplete(product.isColdFill)
                             ? Icon(
                                 Icons.check_circle,
